@@ -12,7 +12,7 @@
 
 ### Product
 - [x] JPA 기반 ProductRepository 구현
-- [ ] @DataJpaTest로 ProductRepository 테스트 작성
+- [x] @DataJpaTest로 ProductRepository 테스트 작성
 
 ### Member
 - [ ] JPA 기반 MemberRepository 구현
