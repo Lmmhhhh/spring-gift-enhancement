@@ -1,0 +1,67 @@
+package gift.jpa;
+
+import gift.domain.Product;
+import gift.repository.ProductRepository;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DataJpaTest
+public class ProductRepositoryTest {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Test
+    @DisplayName("상품 등록 테스트")
+    void save(){
+        Product product = new Product("디퓨저", 19000,"https://image.com");
+
+        Product saved = productRepository.save(product);
+
+        assertThat(saved.getId()).isNotNull();
+        assertThat(saved.getName()).isEqualTo("디퓨저");
+    }
+
+    @Test
+    @DisplayName("상품 전체 조회 테스트")
+    void findAll(){
+        productRepository.save(new Product("A", 1000, "a"));
+        productRepository.save(new Product("B", 2000, "b"));
+
+        var products = productRepository.findAll();
+
+        assertThat(products).hasSize(2);
+        assertThat(products)
+                .extracting(Product::getName)
+                .containsExactlyInAnyOrder("A","B");
+    }
+
+    @Test
+    @DisplayName("상품명 키워드 포함 검색 테스트")
+    void findByNameContaining(){
+        productRepository.save(new Product("배민2만원상품권", 20000, "a"));
+        productRepository.save(new Product("배민5만원상품권", 50000, "a"));
+        productRepository.save(new Product("스타벅스2만원상품권", 20000, "b"));
+
+        var search = productRepository.findByNameContaining("배민");
+
+        assertThat(search).hasSize(2);
+        assertThat(search.get(0).getName()).isEqualTo("배민2만원상품권");
+        assertThat(search.get(1).getName()).isEqualTo("배민5만원상품권");
+    }
+
+    @Test
+    @DisplayName("상품 삭제 테스트")
+    void delete() {
+        Product product = productRepository.save(new Product("배민2만원상품권", 20000, "a"));
+
+        productRepository.delete(product);
+
+        boolean exists = productRepository.existsById(product.getId());
+        assertThat(exists).isFalse();
+    }
+}
