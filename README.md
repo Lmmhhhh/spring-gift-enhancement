@@ -11,7 +11,7 @@
 ## 구현 기능 목록
 
 ### Product
-- [ ] JPA 기반 ProductRepository 구현
+- [x] JPA 기반 ProductRepository 구현
 - [ ] @DataJpaTest로 ProductRepository 테스트 작성
 
 ### Member
