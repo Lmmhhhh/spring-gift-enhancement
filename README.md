@@ -19,5 +19,5 @@
 - [x] @DataJpaTest로 MemberRepository 테스트 작성
 
 ### Wish
-- [ ] JPA 기반 WishRepository 구현
+- [x] JPA 기반 WishRepository 구현
 - [ ] @DataJpaTest로 WishRepository 테스트 작성
