@@ -15,7 +15,7 @@
 - [x] @DataJpaTest로 ProductRepository 테스트 작성
 
 ### Member
-- [ ] JPA 기반 MemberRepository 구현
+- [x] JPA 기반 MemberRepository 구현
 - [ ] @DataJpaTest로 MemberRepository 테스트 작성
 
 ### Wish
