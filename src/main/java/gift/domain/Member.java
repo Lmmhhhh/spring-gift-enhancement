@@ -1,17 +1,33 @@
 package gift.domain;
 
-public class Member {
-    private Long id;
-    private String email;
-    private String pwd;
+import jakarta.persistence.*;
 
-    public Member(Long id, String email, String pwd){
-        this.id = id;
+@Entity
+@Table(name = "member")
+public class Member {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "email", length = 255 , unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "password", length = 255, nullable = false)
+    private String password;
+
+    protected  Member(){
+
+    }
+
+    public Member(String email, String pwd){
         this.email = email;
-        this.pwd = pwd;
+        this.password = pwd;
     }
 
     public Long getId() { return id; }
+
     public String getEmail() { return email; }
-    public String getPwd() { return pwd; }
+
+    public String getPassword() { return password; }
 }
