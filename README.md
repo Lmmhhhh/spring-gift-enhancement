@@ -20,4 +20,4 @@
 
 ### Wish
 - [x] JPA 기반 WishRepository 구현
-- [ ] @DataJpaTest로 WishRepository 테스트 작성
+- [x] @DataJpaTest로 WishRepository 테스트 작성
