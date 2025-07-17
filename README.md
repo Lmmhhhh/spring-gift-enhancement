@@ -28,8 +28,8 @@
 ## 구현 기능 목록
 - [x] 공통 response 포맷 작성
 - [x] `/products` API에 Pageable 적용
-- [ ] `/wishes` API에 Pageable 적용
-- [ ] 페이지네이션 테스트 작성
+- [x] `/wishes` API에 Pageable 적용
+- [x] 페이지네이션 테스트 작성
 
 ## 구현 기능 
 **1. 상품 목록 조회 페이지네이션** (`GET /api/products?page=0&size=2&sort=price,desc`) <br>
@@ -87,5 +87,29 @@
   "totalElements": 3,
   "hasNext": true,
   "hasPrevious": false
+}
+```
+
+**3. 위시리스트 목록 조회 페이지네이션** (`GET /api/wishes?page=1&size=2&sort=product.price,desc`) <br>
+: 1페이지, 한 페이지 당 2개 , `price` 기준 내림차순으로 정렬
+
+### Response
+```json
+{
+  "content": [
+    {
+      "id": 3,
+      "productId": 6,
+      "productName": "멜론스트리밍권",
+      "price": 7900,
+      "imageUrl": "img2"
+    }
+  ],
+  "page": 1,
+  "size": 2,
+  "totalElements": 3,
+  "hasNext": false,
+  "hasPrevious": true,
+  "totalPages": 2
 }
 ```
