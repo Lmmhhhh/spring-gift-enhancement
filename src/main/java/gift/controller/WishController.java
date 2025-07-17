@@ -3,10 +3,13 @@ package gift.controller;
 import gift.auth.LoginMember;
 import gift.dto.LoginMemberDto;
 import gift.dto.request.WishRequest;
+import gift.dto.response.PageResponse;
 import gift.dto.response.WishAddResponse;
 import gift.dto.response.WishMsgResponse;
 import gift.dto.response.WishResponse;
 import gift.service.WishService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,8 +40,10 @@ public class WishController {
     }
 
     @GetMapping
-    public List<WishResponse> getWishList(@LoginMember LoginMemberDto loginMember) {
-        return wishService.getWishList(loginMember.id());
+    public  ResponseEntity<PageResponse<WishResponse>> getWishList(@LoginMember LoginMemberDto loginMember,
+                                                                   Pageable pageable) {
+        Page<WishResponse> page = wishService.getWishList(loginMember.id(), pageable);
+        return ResponseEntity.ok(PageResponse.from(page));
     }
 
     @DeleteMapping("/{productId}")
