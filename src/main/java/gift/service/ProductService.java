@@ -3,6 +3,8 @@ package gift.service;
 import gift.dto.request.ProductRequest;
 import gift.dto.request.ProductUpdateRequest;
 import gift.dto.response.ProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,9 +13,9 @@ public interface ProductService {
 
     ProductResponse getProduct(Long productId);
 
-    List<ProductResponse> getAllProducts();
+    Page<ProductResponse> getAllProducts(Pageable pageable);
 
-    List<ProductResponse> searchByName(String keyword);
+    Page<ProductResponse> searchByName(String keyword, Pageable pageable);
 
     ProductResponse updateProduct(Long productId, ProductUpdateRequest request);
 

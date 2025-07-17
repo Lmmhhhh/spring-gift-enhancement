@@ -3,9 +3,12 @@ package gift.controller;
 
 import gift.dto.request.ProductRequest;
 import gift.dto.request.ProductUpdateRequest;
+import gift.dto.response.PageResponse;
 import gift.dto.response.ProductResponse;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,8 +44,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<PageResponse<ProductResponse>> getAllProducts(Pageable pageable) {
+        Page<ProductResponse> page = productService.getAllProducts(pageable);
+        return ResponseEntity.ok(PageResponse.from(page));
     }
 
     @PatchMapping("/{productId}")
@@ -58,7 +62,9 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<ProductResponse> searchByName(@RequestParam String name) {
-        return productService.searchByName(name);
+    public ResponseEntity<PageResponse<ProductResponse>> searchByName(@RequestParam String name,
+                                                                      Pageable pageable) {
+        Page<ProductResponse> page = productService.searchByName(name, pageable);
+        return ResponseEntity.ok(PageResponse.from(page));
     }
 }

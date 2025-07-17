@@ -7,6 +7,8 @@ import gift.dto.response.ProductResponse;
 import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,10 +39,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(ProductResponse::new)
-                .toList();
+    public Page<ProductResponse> getAllProducts (Pageable pageable){
+        return  productRepository.findAll(pageable)
+                .map(ProductResponse::from);
     }
 
     @Override
@@ -75,9 +76,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> searchByName(String keyword) {
-        return productRepository.findByNameContaining(keyword).stream()
-                .map(ProductResponse::new)
-                .toList();
+    public Page<ProductResponse> searchByName(String keyword, Pageable pageable) {
+        return productRepository.findByNameContaining(keyword, pageable)
+                .map(ProductResponse::from);
     }
 }
