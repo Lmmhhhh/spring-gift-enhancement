@@ -26,7 +26,7 @@
 - 상품과 위시리스트 보기 기능에 페이지네이션 기능 추가
 
 ## 구현 기능 목록
-- [ ] 공통 response 포맷 작성
+- [x] 공통 response 포맷 작성
 - [ ] `/products` API에 Pageable 적용
 - [ ] `/wishes` API에 Pageable 적용
 - [ ] 페이지네이션 테스트 작성
