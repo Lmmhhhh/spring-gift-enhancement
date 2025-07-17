@@ -1,13 +1,16 @@
 package gift.service;
 
+import gift.domain.Member;
 import gift.domain.Product;
 import gift.domain.Wish;
 import gift.dto.request.WishRequest;
 import gift.dto.response.WishAddResponse;
 import gift.dto.response.WishMsgResponse;
 import gift.dto.response.WishResponse;
+import gift.exception.DuplicateWishException;
 import gift.exception.ProductNotFoundException;
 import gift.exception.WishNotFoundException;
+import gift.repository.MemberRepository;
 import gift.repository.ProductRepository;
 import gift.repository.WishRepository;
 import org.springframework.stereotype.Service;
@@ -18,20 +21,31 @@ import java.util.Objects;
 @Service
 public class WishServiceImpl implements WishService {
 
+    private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final WishRepository wishRepository;
 
-    public WishServiceImpl(ProductRepository productRepository, WishRepository wishRepository){
+    public WishServiceImpl(MemberRepository memberRepository,
+                           ProductRepository productRepository,
+                           WishRepository wishRepository){
+        this.memberRepository = memberRepository;
         this.productRepository = productRepository;
         this.wishRepository = wishRepository;
     }
 
     @Override
     public WishAddResponse add(Long memberId, WishRequest request) {
+
+        Member  member  = memberRepository.getReferenceById(memberId);
+
         Product product = productRepository.findById(request.productId())
                 .orElseThrow(() -> new ProductNotFoundException(request.productId()));
 
-        Wish savedWish = wishRepository.add(new Wish(memberId, request.productId()));
+        wishRepository.findByMemberAndProduct(member, product).ifPresent(wish -> {
+            throw new DuplicateWishException();
+        });
+
+        Wish savedWish = wishRepository.save(new Wish(member, product));
 
         WishResponse wishResponse = new WishResponse(
                 savedWish.getId(),
@@ -46,7 +60,10 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishResponse> getWishList(Long memberId) {
-        return wishRepository.findAllByMemberId(memberId).stream()
+
+        Member  member  = memberRepository.getReferenceById(memberId);
+
+        return wishRepository.findByMember(member).stream()
                 .map(wish -> productRepository.findById(wish.getProductId())
                         .map(product -> new WishResponse(
                                 wish.getId(),
@@ -64,10 +81,14 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishMsgResponse deleteByProductId(Long memberId, Long productId) {
-        Wish wish = wishRepository.findByMemberIdAndProductId(memberId, productId)
+
+        Member  member  = memberRepository.getReferenceById(memberId);
+        Product product = productRepository.getReferenceById(productId);
+
+        Wish wish = wishRepository.findByMemberAndProduct(member, product)
                 .orElseThrow(() -> new WishNotFoundException(productId));
 
-        wishRepository.delete(wish.getId());
+        wishRepository.deleteById(wish.getId());
 
         return new WishMsgResponse("위시리스트에서 삭제되었습니다.");
     }

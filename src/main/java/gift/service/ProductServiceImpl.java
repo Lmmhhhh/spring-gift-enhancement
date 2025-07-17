@@ -6,6 +6,7 @@ import gift.dto.request.ProductUpdateRequest;
 import gift.dto.response.ProductResponse;
 import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse register(ProductRequest request) {
-        Product product = new Product(null, request.name(), request.price(), request.imageUrl());
+        Product product = new Product(request.name(), request.price(), request.imageUrl());
 
-        Product savedProduct = productRepository.register(product);
+        Product savedProduct = productRepository.save(product);
 
         return new ProductResponse(savedProduct);
     }
@@ -43,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse updateProduct(Long productId, ProductUpdateRequest request) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()->new ProductNotFoundException(productId));
@@ -62,23 +64,19 @@ public class ProductServiceImpl implements ProductService {
             imageUrl = request.imageUrl();
         }
 
-        Product updated = new Product(productId,name,price,imageUrl);
-
-        productRepository.update(productId, updated);
-
-        return new ProductResponse(updated);
+        return new ProductResponse(product);
     }
 
     @Override
     public void deleteProduct(Long productId) {
         productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
-        productRepository.delete(productId);
+        productRepository.deleteById(productId);
     }
 
     @Override
     public List<ProductResponse> searchByName(String keyword) {
-        return productRepository.searchByName(keyword).stream()
+        return productRepository.findByNameContaining(keyword).stream()
                 .map(ProductResponse::new)
                 .toList();
     }
