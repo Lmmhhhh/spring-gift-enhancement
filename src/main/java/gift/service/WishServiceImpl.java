@@ -13,6 +13,8 @@ import gift.exception.WishNotFoundException;
 import gift.repository.MemberRepository;
 import gift.repository.ProductRepository;
 import gift.repository.WishRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,23 +61,10 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishResponse> getWishList(Long memberId) {
+    public Page<WishResponse> getWishList(Long memberId, Pageable pageable) {
 
-        Member  member  = memberRepository.getReferenceById(memberId);
-
-        return wishRepository.findByMember(member).stream()
-                .map(wish -> productRepository.findById(wish.getProductId())
-                        .map(product -> new WishResponse(
-                                wish.getId(),
-                                product.getId(),
-                                product.getName(),
-                                product.getPrice(),
-                                product.getImageUrl()
-                        ))
-                        .orElse(null)
-                )
-                .filter(Objects::nonNull)
-                .toList();
+        return wishRepository.findByMember_Id(memberId, pageable)
+                .map(WishResponse::from);
     }
 
 

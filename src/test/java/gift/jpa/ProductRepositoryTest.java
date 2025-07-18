@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,11 +49,13 @@ public class ProductRepositoryTest {
         productRepository.save(new Product("배민5만원상품권", 50000, "a"));
         productRepository.save(new Product("스타벅스2만원상품권", 20000, "b"));
 
-        var search = productRepository.findByNameContaining("배민");
+        Pageable pageable = Pageable.ofSize(10); // 기본 page=0, size=10
+        Page<Product> result = productRepository.findByNameContaining("배민", pageable);
 
-        assertThat(search).hasSize(2);
-        assertThat(search.get(0).getName()).isEqualTo("배민2만원상품권");
-        assertThat(search.get(1).getName()).isEqualTo("배민5만원상품권");
+        assertThat(result.getTotalElements()).isEqualTo(2);
+        assertThat(result.getContent())
+                .extracting(Product::getName)
+                .containsExactlyInAnyOrder("배민2만원상품권", "배민5만원상품권");
     }
 
     @Test

@@ -29,10 +29,13 @@ public class Wish {
         this.product = product;
     }
 
-
     public Long getId() {return id;}
 
     public Long getMemberId() {return member.getId();}
 
     public Long getProductId() {return product.getId();}
+
+    public Product getProduct(){
+        return product;
+    }
 }
