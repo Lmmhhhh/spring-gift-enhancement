@@ -32,11 +32,15 @@ public class Option {
         this.product = product;
     }
 
-    public  Long getId() {return id;}
+    public void assignTo(Product product){
+        this.product = product;
+    }
 
-    public  String getName() {return name;}
+    public Long getId() {return id;}
 
-    public  int getQuantity() {return quantity;}
+    public String getName() {return name;}
+
+    public int getQuantity() {return quantity;}
 
     public Product getProduct() {return product;}
 }

@@ -74,4 +74,13 @@ public class WebControllerAdvice {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("message",e.getMessage()));
     }
+
+    @ExceptionHandler(ProductOptionEmptyException.class)
+    public ResponseEntity<Map<String,String>> handleEmptyOption(ProductOptionEmptyException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message",e.getMessage()));
+    }
+
+
 }

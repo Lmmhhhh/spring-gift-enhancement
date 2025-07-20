@@ -2,7 +2,11 @@ package gift.domain;
 
 
 
+import gift.exception.ProductOptionEmptyException;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -20,14 +24,28 @@ public class Product {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Option> options = new ArrayList<>();
+
     protected Product(){
 
     }
 
-    public Product(String name, int price, String imageUrl) {
+    public Product(String name, int price, String imageUrl, List<Option> options) {
+        validateOptions(options);
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.options = options;
+        for (Option option : options) {
+            option.assignTo(this); // 양방향 연관관계 설정
+        }
+    }
+
+    private void validateOptions(List<Option> options) {
+        if (options == null || options.isEmpty()) {
+            throw new ProductOptionEmptyException();
+        }
     }
 
     public Long getId() {
