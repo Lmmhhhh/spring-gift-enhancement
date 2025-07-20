@@ -82,5 +82,12 @@ public class WebControllerAdvice {
                 .body(Map.of("message",e.getMessage()));
     }
 
+    @ExceptionHandler(DuplicateOptionNameException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicateOption(DuplicateOptionNameException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+    }
+
 
 }

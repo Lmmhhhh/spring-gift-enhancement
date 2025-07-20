@@ -2,11 +2,14 @@ package gift.domain;
 
 
 
+import gift.exception.DuplicateOptionNameException;
 import gift.exception.ProductOptionEmptyException;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -33,6 +36,7 @@ public class Product {
 
     public Product(String name, int price, String imageUrl, List<Option> options) {
         validateOptions(options);
+        validateDuplicateOptionNames(options);
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
@@ -45,6 +49,15 @@ public class Product {
     private void validateOptions(List<Option> options) {
         if (options == null || options.isEmpty()) {
             throw new ProductOptionEmptyException();
+        }
+    }
+
+    private void validateDuplicateOptionNames(List<Option> options) {
+        Set<String> seen = new HashSet<>();
+        for (Option option : options) {
+            if (!seen.add(option.getName())) {
+                throw new DuplicateOptionNameException(option.getName());
+            }
         }
     }
 
