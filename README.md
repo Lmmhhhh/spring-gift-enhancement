@@ -124,4 +124,87 @@
 - [x] 옵션 수량 제약 (1이상, 1억 미만)
 - [x] 수량 차감 기능 및 예외 처리
 - [x] 옵션 목록 조회 api 구현
-- [ ] 상품 옵션 테스트 작성 
+- [x] 상품 옵션 테스트 작성 
+
+## 구현 기능
+**1. 옵션 포함 상품 등록** (`POST /api/products`)
+
+### Request
+```json
+{
+  "name": "기본티",
+  "price": 9800,
+  "imageUrl": "t.jpg",
+  "options": [
+    {
+      "name": "화이트/S",
+      "quantity": 969
+    },
+    {
+      "name": "블랙/M",
+      "quantity": 500
+    },
+    {
+      "name": "블랙/L",
+      "quantity": 322
+    }
+  ]
+}
+```
+
+### Response
+```json
+{
+  "id": 2,
+  "name": "기본티",
+  "price": 9800,
+  "imageUrl": "t.jpg",
+  "options": [
+    {
+      "id": 4,
+      "name": "화이트/S",
+      "quantity": 969
+    },
+    {
+      "id": 5,
+      "name": "블랙/M",
+      "quantity": 500
+    },
+    {
+      "id": 6,
+      "name": "블랙/L",
+      "quantity": 322
+    }
+  ]
+}
+```
+
+**2. 옵션 조회** (`GET /api/{productId}/options`)
+### Response
+```json
+{
+  "content": [
+    {
+      "id": 4,
+      "name": "화이트/S",
+      "quantity": 969
+    },
+    {
+      "id": 5,
+      "name": "블랙/M",
+      "quantity": 500
+    },
+    {
+      "id": 6,
+      "name": "블랙/L",
+      "quantity": 322
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 3,
+  "hasNext": false,
+  "hasPrevious": false,
+  "totalPages": 1
+}
+```
