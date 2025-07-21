@@ -1,6 +1,7 @@
 package gift.dto.request;
 
 import gift.valid.NoKakao;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -22,5 +23,5 @@ public record ProductRequest(
         @NotBlank (message = "상품 이미지를 등록해주세요.")
         String imageUrl,
 
-        List<OptionRequest> options
+        List<@Valid OptionRequest> options
 ) {}
