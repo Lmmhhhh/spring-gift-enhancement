@@ -1,5 +1,6 @@
 package gift.domain;
 
+import gift.exception.NotEnoughStockException;
 import jakarta.persistence.*;
 
 import java.security.PublicKey;
@@ -30,6 +31,13 @@ public class Option {
         this.name = name;
         this.quantity = quantity;
         this.product = product;
+    }
+
+    public void substract(int amount){
+        if (quantity < amount){
+            throw new NotEnoughStockException();
+        }
+        this.quantity -= amount;
     }
 
     public void assignTo(Product product){

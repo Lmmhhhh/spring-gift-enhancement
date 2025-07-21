@@ -89,5 +89,12 @@ public class WebControllerAdvice {
                 .body(Map.of("message", e.getMessage()));
     }
 
+    @ExceptionHandler(NotEnoughStockException.class)
+    public ResponseEntity<Map<String, String>> handleNotEnoughStock(NotEnoughStockException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+    }
+
 
 }
