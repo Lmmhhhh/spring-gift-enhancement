@@ -27,6 +27,11 @@ public class Option {
 
     ){}
 
+    public Option(String name, int quantity){
+        this.name = name;
+        this.quantity = quantity;
+    }
+
     public Option(String name, int quantity, Product product){
         this.name = name;
         this.quantity = quantity;

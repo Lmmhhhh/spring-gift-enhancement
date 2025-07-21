@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.domain.Option;
 import gift.domain.Product;
 import gift.dto.request.ProductRequest;
 import gift.dto.request.ProductUpdateRequest;
@@ -24,7 +25,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse register(ProductRequest request) {
-        Product product = new Product(request.name(), request.price(), request.imageUrl());
+        List<Option> options = request.options().stream()
+                .map(o ->new Option(o.name(),o.quantity()))
+                .toList();
+        Product product = new Product(request.name(), request.price(), request.imageUrl(),options);
 
         Product savedProduct = productRepository.save(product);
 

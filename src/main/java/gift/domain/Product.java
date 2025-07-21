@@ -1,7 +1,6 @@
 package gift.domain;
 
 
-
 import gift.exception.DuplicateOptionNameException;
 import gift.exception.ProductOptionEmptyException;
 import jakarta.persistence.*;
@@ -42,9 +41,9 @@ public class Product {
         this.imageUrl = imageUrl;
         this.options = options;
         for (Option option : options) {
-            option.assignTo(this); // 양방향 연관관계 설정
-        }
+            option.assignTo(this);        }
     }
+
 
     private void validateOptions(List<Option> options) {
         if (options == null || options.isEmpty()) {
@@ -75,5 +74,9 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public List<Option> getOptions() {
+        return options;
     }
 }
