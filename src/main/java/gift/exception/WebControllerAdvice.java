@@ -96,5 +96,11 @@ public class WebControllerAdvice {
                 .body(Map.of("message", e.getMessage()));
     }
 
+    @ExceptionHandler(InvalidOptionNameException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidOptionName(InvalidOptionNameException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+    }
 
 }
