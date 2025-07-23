@@ -1,6 +1,7 @@
 package gift.jpa;
 
 import gift.domain.Member;
+import gift.domain.Option;
 import gift.domain.Product;
 import gift.domain.Wish;
 import gift.repository.MemberRepository;
@@ -31,7 +32,7 @@ public class WishRepositoryTest {
     @DisplayName("위시리스트 추가 테스트")
     void save(){
         Member member = memberRepository.save(new Member("abc@gmail.com", "1234"));
-        Product product = productRepository.save(new Product("A", 1000, "a"));
+        Product product = productRepository.save(new Product("A", 1000, "a",List.of(new Option("화이트/S", 10))));
 
         Wish saved = wishRepository.save(new Wish(member, product));
 
@@ -44,8 +45,8 @@ public class WishRepositoryTest {
     @DisplayName("위시리스트 조회 테스트")
     void findByMember(){
         Member member = memberRepository.save(new Member("abc@gmail.com", "1234"));
-        Product product1 = productRepository.save(new Product("A", 1000, "a"));
-        Product product2 = productRepository.save(new Product("B", 1000, "b"));
+        Product product1 = productRepository.save(new Product("A", 1000, "a",List.of(new Option("화이트/S", 10))));
+        Product product2 = productRepository.save(new Product("B", 1000, "b",List.of(new Option("화이트/S", 10))));
 
        wishRepository.save(new Wish(member, product1));
        wishRepository.save(new Wish(member, product2));
@@ -61,7 +62,7 @@ public class WishRepositoryTest {
     @DisplayName("위시리스트 삭제 테스트")
     void delete(){
         Member member = memberRepository.save(new Member("abc@gmail.com", "1234"));
-        Product product = productRepository.save(new Product("삭제대상", 1500, "image-del"));
+        Product product = productRepository.save(new Product("삭제대상", 1500, "image-del",List.of(new Option("화이트/S", 10))));
 
         Wish wish = wishRepository.save(new Wish(member, product));
         Long wishId = wish.getId();

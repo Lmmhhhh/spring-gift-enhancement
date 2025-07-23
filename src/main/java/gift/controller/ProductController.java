@@ -1,10 +1,13 @@
 package gift.controller;
 
 
+import gift.domain.Option;
 import gift.dto.request.ProductRequest;
 import gift.dto.request.ProductUpdateRequest;
+import gift.dto.response.OptionResponse;
 import gift.dto.response.PageResponse;
 import gift.dto.response.ProductResponse;
+import gift.service.OptionService;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -22,9 +25,12 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final OptionService optionService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OptionService optionService) {
+
         this.productService = productService;
+        this.optionService = optionService;
     }
 
     @PostMapping
@@ -66,5 +72,15 @@ public class ProductController {
                                                                       Pageable pageable) {
         Page<ProductResponse> page = productService.searchByName(name, pageable);
         return ResponseEntity.ok(PageResponse.from(page));
+    }
+
+    @GetMapping ("/{productId}/options")
+    public ResponseEntity<PageResponse<OptionResponse>> getOptions(
+            @PathVariable Long productId,
+            Pageable pageable
+    ){
+        return ResponseEntity.ok(
+                PageResponse.from(optionService.getOptions(productId,pageable))
+        );
     }
 }

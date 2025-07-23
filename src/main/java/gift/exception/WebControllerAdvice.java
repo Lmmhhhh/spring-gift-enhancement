@@ -74,4 +74,33 @@ public class WebControllerAdvice {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("message",e.getMessage()));
     }
+
+    @ExceptionHandler(ProductOptionEmptyException.class)
+    public ResponseEntity<Map<String,String>> handleEmptyOption(ProductOptionEmptyException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message",e.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateOptionNameException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicateOption(DuplicateOptionNameException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+    }
+
+    @ExceptionHandler(NotEnoughStockException.class)
+    public ResponseEntity<Map<String, String>> handleNotEnoughStock(NotEnoughStockException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidOptionNameException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidOptionName(InvalidOptionNameException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+    }
+
 }

@@ -113,3 +113,98 @@
   "totalPages": 2
 }
 ```
+
+# [step3] 상품 옵션
+
+## 구현 기능 목록
+- [x] Option 엔티티 추가 및 Product와 연관관계 매핑(1:N)
+- [x] 상품에 옵션 1개 이상 필수 조건 적용
+- [x] 옵션 이름 제약(최대 50자, 허용 특수문자만 사용 가능)
+- [x] 상품 내 옵션 이름 중복 등록 방지
+- [x] 옵션 수량 제약 (1이상, 1억 미만)
+- [x] 수량 차감 기능 및 예외 처리
+- [x] 옵션 목록 조회 api 구현
+- [x] 상품 옵션 테스트 작성 
+
+## 구현 기능
+**1. 옵션 포함 상품 등록** (`POST /api/products`)
+
+### Request
+```json
+{
+  "name": "기본티",
+  "price": 9800,
+  "imageUrl": "t.jpg",
+  "options": [
+    {
+      "name": "화이트/S",
+      "quantity": 969
+    },
+    {
+      "name": "블랙/M",
+      "quantity": 500
+    },
+    {
+      "name": "블랙/L",
+      "quantity": 322
+    }
+  ]
+}
+```
+
+### Response
+```json
+{
+  "id": 2,
+  "name": "기본티",
+  "price": 9800,
+  "imageUrl": "t.jpg",
+  "options": [
+    {
+      "id": 4,
+      "name": "화이트/S",
+      "quantity": 969
+    },
+    {
+      "id": 5,
+      "name": "블랙/M",
+      "quantity": 500
+    },
+    {
+      "id": 6,
+      "name": "블랙/L",
+      "quantity": 322
+    }
+  ]
+}
+```
+
+**2. 옵션 조회** (`GET /api/{productId}/options`)
+### Response
+```json
+{
+  "content": [
+    {
+      "id": 4,
+      "name": "화이트/S",
+      "quantity": 969
+    },
+    {
+      "id": 5,
+      "name": "블랙/M",
+      "quantity": 500
+    },
+    {
+      "id": 6,
+      "name": "블랙/L",
+      "quantity": 322
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 3,
+  "hasNext": false,
+  "hasPrevious": false,
+  "totalPages": 1
+}
+```
