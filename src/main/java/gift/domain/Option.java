@@ -19,6 +19,11 @@ public class Option {
     @Column(name ="quantity", nullable = false)
     private int quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id",nullable = false,
+            foreignKey = @ForeignKey(name = "fk_option_product_id_ref_product_id"))
+    private Product product;
+
     protected Option(
 
     ){}
@@ -58,5 +63,7 @@ public class Option {
     public String getName() {return name;}
 
     public int getQuantity() {return quantity;}
+
+    public Product getProduct() {return product;}
 
 }
