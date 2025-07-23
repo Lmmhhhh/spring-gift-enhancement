@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface OptionService {
     Page<OptionResponse> getOptions(Long productId, Pageable pageable);
+    void subtractQuantity(Long optionId, int quantityToUse);
 }

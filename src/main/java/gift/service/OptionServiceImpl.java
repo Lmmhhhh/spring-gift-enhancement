@@ -5,6 +5,7 @@ import gift.domain.Product;
 import gift.dto.request.OptionRequest;
 import gift.dto.response.OptionResponse;
 import gift.exception.DuplicateOptionNameException;
+import gift.exception.OptionNotFoundException;
 import gift.exception.ProductNotFoundException;
 import gift.repository.OptionRepository;
 import gift.repository.ProductRepository;
@@ -33,5 +34,13 @@ public class OptionServiceImpl implements OptionService{
         }
         return optionRepository.findAllByProductId(productId, pageable)
                 .map(OptionResponse::from);
+    }
+
+    @Override
+    public void subtractQuantity(Long optionId, int quantityToUse){
+        Option option = optionRepository.findById(optionId)
+                .orElseThrow(()-> new OptionNotFoundException(optionId));
+
+        option.substract(quantityToUse);
     }
 }
